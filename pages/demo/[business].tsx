@@ -1,39 +1,33 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import payloads from '../../data/abacus_payloads.json';
 
 export default function BusinessDemo() {
   const router = useRouter();
   const { business } = router.query;
+  const [demo, setDemo] = useState(null);
 
-  if (!router.isReady) return <div>Loading...</div>;
+  useEffect(() => {
+    if (!router.isReady) return;
 
-  const demo = payloads.find(
-    (item) =>
-      item.business_name.toLowerCase().replace(/\s+/g, '-') === business
-  );
+    fetch('/data/abacus_payloads.json')
+      .then((res) => res.json())
+      .then((payloads) => {
+        const match = payloads.find(
+          (item) =>
+            item.business_name.toLowerCase().replace(/\s+/g, '-') === business
+        );
+        setDemo(match);
+      });
+  }, [router.isReady, business]);
 
-  if (!demo) {
-    return <div>No demo found for: {business}</div>;
-  }
+  if (!demo) return <div>No demo found for: {business}</div>;
 
   return (
     <div>
       <h1>{demo.business_name}</h1>
-      <p>{demo.script}</p>
-      <p>
-        <strong>Website:</strong>{' '}
-        <a href={demo.website} target="_blank" rel="noopener noreferrer">
-          {demo.website}
-        </a>
-      </p>
-      <p>
-        <strong>Email:</strong> {demo.email}
-      </p>
-      <p>
-        <strong>Phone:</strong> {demo.phone}
-      </p>
-      <video src={`/videos/${business}.mp4`} controls width="600" />
-      <p>{demo.video_elements.call_to_action}</p>
+      <p>{demo.description}</p>
+      <p>{demo.call_to_action}</p>
+      <p>{demo.call_to_return}</p>
     </div>
   );
 }
