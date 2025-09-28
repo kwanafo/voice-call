@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import payloads from '../../data/demo_payloads.json';
+import payloads from '../../data/abacus_payloads.json';
 
 export default function BusinessDemo() {
   const router = useRouter();
