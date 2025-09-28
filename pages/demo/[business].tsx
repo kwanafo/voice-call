@@ -31,3 +31,4 @@ export default function BusinessDemo() {
     </div>
   );
 }
+const unused = 'this should trigger a warning';
