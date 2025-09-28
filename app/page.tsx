@@ -101,3 +101,5 @@ export default function Home() {
     </div>
   );
 }
+// Updated call-to-action for clarity
+const callToAction = 'Tap to speak with your local plumbing expert.';
